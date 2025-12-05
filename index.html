@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baca Towing – 24/7 Tow & Roadside Service</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f5f7fa; color: #1d1d1d; }
+    header { background: #0d1b2a; color: #fff; padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    header img { height: 55px; }
+    header .phone-btn { background: #e63946; padding: 12px 20px; border-radius: 8px; color: #fff; text-decoration: none; font-size: 1rem; font-weight: bold; }
+
+    .hero { background: #1b263b; color: #fff; text-align: center; padding: 90px 20px; }
+    .hero h1 { margin: 0; font-size: 2.8rem; font-weight: 700; }
+    .hero p { font-size: 1.2rem; margin: 15px 0 25px; }
+    .hero a { background: #e63946; padding: 14px 26px; border-radius: 10px; color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: bold; }
+
+    .section { padding: 60px 20px; max-width: 1100px; margin: auto; }
+    .section h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; color: #0d1b2a; }
+
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+    .card { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
+    .card h3 { margin-top: 10px; color: #1b263b; }
+
+    /* Contact Form */
+    .contact-section { max-width: 600px; margin: auto; padding-bottom: 80px; }
+    .contact-form { display: flex; flex-direction: column; gap: 15px; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .contact-form input, .contact-form textarea { padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
+    .contact-form button { background: #e63946; color: #fff; padding: 14px; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; font-weight: bold; }
+    .contact-form button:hover { background: #c92f3c; }
+
+    footer { background: #0d1b2a; color: white; text-align: center; padding: 20px; margin-top: 40px; }
+      /* Gallery – force all 6 images in one straight horizontal line */
+    .gallery-grid {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap; /* prevents wrapping */
+      justify-content: flex-start;
+      gap: 20px;
+      overflow-x: auto; /* horizontal scroll on small screens */
+      padding: 10px 0;
+      align-items: center;
+    }
+
+    .gallery-item img {
+      height: 200px; /* consistent height */
+      width: auto;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    /* Hover zoom effect */
+    .gallery-item img:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    /* Lightbox overlay */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    /* Hover zoom effect */
+    .gallery-item img:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    /* Captions under each gallery image */
+    .gallery-caption {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #444;
+      text-align: center;
+      max-width: 220px;
+    }
+
+    /* Lightbox overlay */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lightbox-overlay img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .lightbox-caption {
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      width: 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 8px;
+      user-select: none;
+    }
+
+    .lightbox-arrow.left { left: -50px; }
+    .lightbox-arrow.right { right: -50px; }
+
+    @media (max-width: 768px) {
+      .lightbox-arrow.left { left: 5px; }
+      .lightbox-arrow.right { right: 5px; }
+    }
+
+    /* Fade-in animation for gallery section */
+    .gallery-section {
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+</style>
+</head>
+<body>
+  <header>
+    <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+      <img src="C:\Users\Emman\OneDrive\Pictures\il_1140xN.4101508091_9zc3 logo.jpg" alt="Baca Towing Logo" />
+      <h2 style="margin:0;">Baca Towing – 24/7 Tow & Roadside Service</h2>
+    </div>
+    <a href="tel:3852188812" class="phone-btn">Call Now: 385-218-8812</a>
+  </header>
+
+  <section class="hero">
+    <h1>Fast • Reliable • 24/7 Towing</h1>
+    <p>Professional towing and roadside assistance across Dallas–Fort Worth.</p>
+    <a href="tel:3852188812">Call for Immediate Help</a>
+  </section>
+
+  <section class="section">
+    <h2>Our Services</h2>
+    <div class="services">
+      <div class="card"><h3>Local & Long-Distance Towing</h3><p>Safe and affordable transport for all vehicles.</p></div>
+      <div class="card"><h3>Jump Starts</h3><p>Dead battery? We’ll get you powered up quickly.</p></div>
+      <div class="card"><h3>Lockout Services</h3><p>Locked out? We’ll get you inside fast.</p></div>
+      <div class="card"><h3>Winch-Out Assistance</h3><p>Stuck in mud or ditch? We pull you out safely.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>About Baca Towing</h2>
+    <p style="text-align:center; max-width:800px; margin:auto;">
+      Baca Towing is a full‑service towing and emergency roadside assistance company serving the Greater Dallas, Texas area. Licensed, insured, and locally operated, we provide fast and professional service with friendly dispatchers and skilled tow truck operators.
+      <br><br>
+      We offer flatbed and wheel‑lift towing, accident recovery, local and long‑distance transport, winch‑outs, and motorcycle towing. Our roadside technicians also provide jump starts, lockouts, tire changes, battery replacement, and fuel delivery.
+      <br><br>
+      We value your time and safety. Count on Baca Towing for damage‑free towing and responsive roadside assistance. Contact us today for reliable service!
+    </p>
+  </section>
+
+  <section class="section contact-section">
+    <h2>Contact Us</h2>
+    <form class="contact-form" action="#" method="post">
+      <label>Name</label><input type="text" placeholder="Your Name" required>
+      <label>Phone Number</label><input type="tel" placeholder="Your Phone Number" required>
+      <label>Email</label><input type="email" placeholder="Your Email (optional)">
+      <label>Message</label><textarea placeholder="How can we help?" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>Baca Towing • Dallas–Fort Worth, TX</p>
+    <p>Call: 385-218-8812</p>
+  </footer>
+
+    <!-- Gallery Section -->
+  <section class="section gallery-section">
+    <h2>Our Work</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="C:/Users/Emman/OneDrive/Pictures/Towing pic 2_files/2024-11-10.webp" alt="Jump start service" data-index="0" data-caption="Jump start service – fast roadside help when your battery dies.">
+        <div class="gallery-caption">Jump start service – fast roadside help when your battery dies.</div>
+      </div>
+      <div class="gallery-item">
+        <img src="C:/Users/Emman/OneDrive/Pictures/Towing pic 2_files/2025-11-25.webp" alt="Accident towing" data-index="1" data-caption="Accident towing – careful loading and safe transport after a collision.">
+        <div class="gallery-caption">Accident towing – careful loading and safe transport after a collision.</div>
+      </div>
+      <div class="gallery-item">
+        <img src="C:/Users/Emman/OneDrive/Pictures/Towing pic 2_files/2025-09-27.webp" alt="EV towing" data-index="2" data-caption="EV towing – damage-free flatbed service for electric vehicles.">
+        <div class="gallery-caption">EV towing – damage-free flatbed service for electric vehicles.</div>
+      </div>
+      <div class="gallery-item">
+        <img src="C:/Users/Emman/OneDrive/Pictures/Towing pic 2_files/2024-10-10.webp" alt="Roadside assistance" data-index="3" data-caption="Roadside assistance – on-site help to get you moving again.">
+        <div class="gallery-caption">Roadside assistance – on-site help to get you moving again.</div>
+      </div>
+      <div class="gallery-item">
+        <img src="C:/Users/Emman/OneDrive/Pictures/Towing pic 2_files/2025-11-25.webp" alt="Accident tow repeat" data-index="4" data-caption="Accident tow – secure loading and careful vehicle handling.">
+        <div class="gallery-caption">Accident tow – secure loading and careful vehicle handling.</div>
+      </div>
+      <div class="gallery-item">
+        <img src="C:/Users/Emman/OneDrive/Pictures/Towing pic 2_files/2025-09-27.webp" alt="EV tow repeat" data-index="5" data-caption="EV tow – experienced operators for specialty vehicles.">
+        <div class="gallery-caption">EV tow – experienced operators for specialty vehicles.</div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Lightbox Element -->
+  <div class="lightbox-overlay" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-arrow left" id="lightbox-prev">&#10094;</button>
+      <img id="lightbox-img" src="" alt="Expanded view" />
+      <button class="lightbox-arrow right" id="lightbox-next">&#10095;</button>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+
+    const galleryImages = Array.from(document.querySelectorAll('.gallery-item img'));
+    let currentIndex = 0;
+    let autoSlideInterval = null;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function showImage(index) {
+      if (index < 0) index = galleryImages.length - 1;
+      if (index >= galleryImages.length) index = 0;
+      currentIndex = index;
+      const img = galleryImages[currentIndex];
+      lightboxImg.src = img.src;
+      lightboxCaption.textContent = img.getAttribute('data-caption') || img.alt || '';
+    }
+
+    function openLightbox(index) {
+      showImage(index);
+      lightbox.classList.add('active');
+      startAutoSlide();
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      stopAutoSlide();
+    }
+
+    function nextImage() {
+      showImage(currentIndex + 1);
+    }
+
+    function prevImage() {
+      showImage(currentIndex - 1);
+    }
+
+    function startAutoSlide() {
+      stopAutoSlide();
+      autoSlideInterval = setInterval(nextImage, 5000); // auto-slide every 5 seconds
+    }
+
+    function stopAutoSlide() {
+      if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+      }
+    }
+
+    // Click handlers for gallery images
+    galleryImages.forEach((img) => {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const index = parseInt(img.getAttribute('data-index')) || galleryImages.indexOf(img);
+        openLightbox(index);
+      });
+    });
+
+    // Arrow buttons
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextImage();
+      startAutoSlide();
+    });
+
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevImage();
+      startAutoSlide();
+    });
+
+    // Close on background click
+    lightbox.addEventListener('click', () => {
+      closeLightbox();
+    });
+
+    // Prevent closing when clicking on image/content itself
+    document.querySelector('.lightbox-content').addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    // Swipe support for mobile
+    lightbox.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    lightbox.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0) {
+          nextImage();
+        } else {
+          prevImage();
+        }
+        startAutoSlide();
+      }
+    }
+
+    // Close with ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+      if (e.key === 'ArrowRight' && lightbox.classList.contains('active')) {
+        nextImage();
+        startAutoSlide();
+      }
+      if (e.key === 'ArrowLeft' && lightbox.classList.contains('active')) {
+        prevImage();
+        startAutoSlide();
+      }
+    });
+  </script>
+</body>
+</html>
